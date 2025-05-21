@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pertanyaan Manis dari Vinz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #2f4f7f, #1a1d23);
+      height: 100vh;
+      font-family: 'Pacifico', cursive;
+      overflow: hidden;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    .judul {
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+      font-size: 32px;
+      margin-top: 40px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .pertanyaan {
+      font-size: 26px;
+      margin-bottom: 30px;
+      min-height: 100px;
+    }
+    .jawaban {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    button {
+      font-family: 'Pacifico', cursive;
+      font-size: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background-color: #ff6688;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    button:hover {
+      transform: scale(1.1);
+    }
+    .elak:hover {
+      position: absolute;
+      top: calc(50% - 30px);
+      left: calc(50% - 50px);
+      transform: translate(
+        calc((Math.random() - 0.5) * 400px),
+        calc((Math.random() - 0.5) * 300px)
+      );
+    }
+    .hati-besar {
+      font-size: 150px;
+      color: #ff69b4;
+      text-align: center;
+      position: relative;
+    }
+    .huruf-y {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 60px;
+      color: white;
+    }
+    @keyframes jatuh {
+      0% { transform: translateY(-10px); }
+      100% { transform: translateY(100vh); }
+    }
+    .bintang {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: white;
+      animation: jatuh 5s linear infinite;
+      border-radius: 50%;
+    }
+    .bintang:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .bintang:nth-child(2) { left: 30%; animation-delay: 1s; }
+    .bintang:nth-child(3) { left: 50%; animation-delay: 2s; }
+    .bintang:nth-child(4) { left: 70%; animation-delay: 3s; }
+    .bintang:nth-child(5) { left: 90%; animation-delay: 4s; }
+
+    .musik-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 999;
+      font-family: 'Pacifico', cursive;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background-color: #ff6688;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Bintang -->
+  <div class="bintang"></div>
+  <div class="bintang"></div>
+  <div class="bintang"></div>
+  <div class="bintang"></div>
+  <div class="bintang"></div>
+
+  <!-- Tombol untuk memulai musik -->
+  <button class="musik-btn" onclick="document.getElementById('suaraAngin').play()">Putar Musik</button>
+
+  <!-- Audio dari Vocaroo -->
+  <audio id="suaraAngin" loop>
+    <source src="https://media.vocaroo.com/mp3/148z16qjPnxo" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <div class="judul">Pertanyaan Manis dari Vinz</div>
+  <div class="container" id="konten">
+    <div class="pertanyaan" id="pertanyaan">...</div>
+    <div class="jawaban" id="jawaban"></div>
+  </div>
+
+  <script>
+    const data = [
+      {
+        tanya: "1. Menurut kamu, kamu manis gak?",
+        opsi: ["Iya", "Tidak"],
+        wajib: "Iya"
+      },
+      {
+        tanya: "2. Kamu itu cantik banget, iya gak?",
+        opsi: ["Iya", "Tidak"],
+        wajib: "Iya"
+      },
+      {
+        tanya: "3. Menurut kamu, kamu wanita idaman, iya gak?",
+        opsi: ["Iya", "Tidak"],
+        wajib: "Iya"
+      },
+      {
+        tanya: "4. kamu sayang aku kan? canda",
+        opsi: ["engak", "sayang:)"],
+        wajib: "sayang:)"
+      },
+      {
+        tanya: "5. Kamu sering-sering dong ngechat aku, ok?",
+        opsi: ["Ga mau", "Iya baby"],
+        wajib: "Iya baby"
+      },
+      {
+        tanya: "6. Love you, jawab balik dong",
+        opsi: ["Love you too", "Ga mau"],
+        wajib: "Love you too"
+      }
+    ];
+
+    let index = 0;
+    const pertanyaan = document.getElementById("pertanyaan");
+    const jawaban = document.getElementById("jawaban");
+    const konten = document.getElementById("konten");
+
+    function tampilkanPertanyaan() {
+      if (index >= data.length) {
+        tampilkanHati();
+        return;
+      }
+
+      pertanyaan.textContent = data[index].tanya;
+      jawaban.innerHTML = "";
+
+      data[index].opsi.forEach(opsi => {
+        const btn = document.createElement("button");
+        btn.textContent = opsi;
+
+        if (opsi === data[index].wajib) {
+          btn.addEventListener("click", () => {
+            index++;
+            tampilkanPertanyaan();
+          });
+        } else {
+          btn.classList.add("elak");
+          btn.addEventListener("mouseenter", () => {
+            btn.style.top = Math.random() * 80 + "%";
+            btn.style.left = Math.random() * 80 + "%";
+          });
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+          });
+        }
+
+        jawaban.appendChild(btn);
+      });
+    }
+
+    function tampilkanHati() {
+      konten.innerHTML = `
+        <div class="hati-besar">
+          ❤
+          <div class="huruf-y">Y</div>
+        </div>
+      `;
+    }
+
+    tampilkanPertanyaan();
+  </script>
+</body>
+</html>
